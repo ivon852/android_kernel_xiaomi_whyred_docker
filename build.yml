@@ -1,0 +1,87 @@
+kind: pipeline
+name: RAD KERNEL BUILD GCC
+
+clone:
+  disable: true
+
+steps:
+- name: gnu-gcc oldcam
+  image: archlinux:latest
+  environment:
+      PUBLIC_PUSH:
+        from_secret: PUBLIC_PUSH
+      TG_BOT_API:
+        from_secret: TG_BOT_API
+  commands:
+    - curl https://raw.githubusercontent.com/theradcolor/lazyscripts/master/etc/workaround > workaround && bash workaround
+    - pacman -Sy base-devel bc curl git jre-openjdk zip --noconfirm
+    - git clone --depth=1 --quiet https://github.com/theradcolor/android_kernel_xiaomi_whyred.git -b ${DRONE_COMMIT_BRANCH} source && cd source
+    - git clone --depth=1 --quiet https://github.com/theradcolor/lazyscripts.git -b master
+    - script -c "bash -x lazyscripts/ci-scripts/ci-rad --oldcam --gcc --gcc-master --lto" build-logs-rad-gcc-oldcam.log && bash /drone/src/source/lazyscripts/ci-scripts/logger --rk-logs
+
+
+---
+kind: pipeline
+name: RAD KERNEL BUILD CLANG
+
+clone:
+  disable: true
+
+steps:
+- name: llvm-clang oldcam
+  image: archlinux:latest
+  environment:
+      PUBLIC_PUSH:
+        from_secret: PUBLIC_PUSH
+      TG_BOT_API:
+        from_secret: TG_BOT_API
+  commands:
+    - curl https://raw.githubusercontent.com/theradcolor/lazyscripts/master/etc/workaround > workaround && bash workaround
+    - pacman -Sy base-devel bc curl git jre-openjdk zip --noconfirm
+    - git clone --depth=1 --quiet https://github.com/theradcolor/android_kernel_xiaomi_whyred.git -b ${DRONE_COMMIT_BRANCH} source && cd source
+    - git clone --depth=1 --quiet https://github.com/theradcolor/lazyscripts.git -b master
+    - script -c "bash -x lazyscripts/ci-scripts/ci-rad --oldcam --proton-clang --lto" build-logs-rad-proton-clang-oldcam.log && bash /drone/src/source/lazyscripts/ci-scripts/logger --rk-logs
+
+---
+kind: pipeline
+name: RAD KERNEL BUILD AOSP CLANG
+
+clone:
+  disable: true
+
+steps:
+- name: aosp-clang oldcam
+  image: archlinux:latest
+  environment:
+      PUBLIC_PUSH:
+        from_secret: PUBLIC_PUSH
+      TG_BOT_API:
+        from_secret: TG_BOT_API
+  commands:
+    - curl https://raw.githubusercontent.com/theradcolor/lazyscripts/master/etc/workaround > workaround && bash workaround
+    - pacman -Sy base-devel bc curl git jre-openjdk wget zip --noconfirm
+    - git clone --depth=1 --quiet https://github.com/theradcolor/android_kernel_xiaomi_whyred.git -b ${DRONE_COMMIT_BRANCH} source && cd source
+    - git clone --depth=1 --quiet https://github.com/theradcolor/lazyscripts.git -b master
+    - script -c "bash -x lazyscripts/ci-scripts/ci-rad --oldcam --aosp-clang --lto" build-logs-rad-aosp-clang-oldcam.log && bash /drone/src/source/lazyscripts/ci-scripts/logger --rk-logs
+
+---
+kind: pipeline
+name: FAKERAD KERNEL BUILD GCC
+
+clone:
+  disable: true
+
+steps:
+- name: gnu-gcc oldcam
+  image: archlinux:latest
+  environment:
+      KERNEL_TYPE: fakerad
+      TG_BOT_API:
+        from_secret: TG_BOT_API
+  commands:
+    - curl https://raw.githubusercontent.com/theradcolor/lazyscripts/master/etc/workaround > workaround && bash workaround
+    - pacman -Sy base-devel bc curl git jre-openjdk zip --noconfirm
+    - git clone --depth=1 --quiet https://github.com/theradcolor/android_kernel_xiaomi_whyred.git -b ${CI_BRANCH} source && cd source
+    - if [ ! -d /drone/src/source/ ]; then mkdir source && cd source; fi
+    - git clone --depth=1 --quiet https://github.com/theradcolor/lazyscripts.git -b master
+    - script -c "bash -x lazyscripts/ci-scripts/ci-fake" build-logs-fakerad.log && bash /drone/src/source/lazyscripts/ci-scripts/logger --frk-logs
