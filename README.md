@@ -1,5 +1,7 @@
-# android_kernel_xiaomi_whyred_docker
+# Docker Kerenel for Xiaomi Whyred
 A Docker compatible Android kernel for Xiaomi Redmi Note 5 Pro (whyred).
+
+可透過Termux原生執行docker的紅米Note 5內核。
 
 This kernel is based on [RAD kernel for whyred](https://github.com/radcolor/android_kernel_xiaomi_whyred), adds support for running docker on Android.
 ![](https://i.postimg.cc/MHbSYmhq/Screenshot-20211228-232245-Termux.png)
