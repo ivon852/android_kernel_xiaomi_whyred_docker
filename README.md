@@ -26,7 +26,7 @@ sudo dockerd --iptables=false
 1. Clone this repo, expor CROSS_COMPILE & CROSS_COMPILE_ARM32 path (in this case I use Eva GCC) and ARCH type. 
 2. Kernel configs are alreay in `.config`. Launch menuconfig by `make menuconfig`.
 3. After tweaking, start compiling by `make`.
-4. Use Android Image Kitchen to repack generated dts file to `boot.img`.
+4. Use Android Image Kitchen to repack generated dtb file to `boot.img`.
 
 ## References
 If you want to compile kernel for other devices, you may refer to [FreddieOliveira's Tutorial](https://gist.github.com/FreddieOliveira/efe850df7ff3951cb62d74bd770dce27).
