@@ -23,7 +23,7 @@ sudo dockerd --iptables=false
 ```
 
 ## Compilation Guide
-1. Clone this repo, expor CROSS_COMPILE & CROSS_COMPILE_ARM32 path (in this case I use Eva GCC) and ARCH type. 
+1. Clone this repo, export CROSS_COMPILE & CROSS_COMPILE_ARM32 path (here I use Eva GCC) and ARCH type. 
 2. Kernel configs are alreay in `.config`. Launch menuconfig by `make menuconfig`.
 3. After tweaking, start compiling by `make`.
 4. Use Android Image Kitchen to repack generated dtb file to `boot.img`.
